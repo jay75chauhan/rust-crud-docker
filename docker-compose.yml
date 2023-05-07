@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  rustapp:
+    container_name: rustapp
+    image: jay75chauhan/rust_crud_docker:1.1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: postgres://postgres:postgres@dbrust:5432/postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbrust
+  dbrust:
+    container_name: dbrust
+    image: postgres:12
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - dbrust:/var/lib/postgresql/data
+
+volumes:
+  dbrust: {}
